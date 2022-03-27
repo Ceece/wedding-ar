@@ -1,0 +1,39 @@
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-image.prod.js"></script>
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-image-aframe.prod.js"></script>
+  <script>
+    window.onload = function () {
+      const videoLink = document.querySelector('#target-entity');
+      const video = document.querySelector('#video');
+      videoLink.addEventListener("targetFound", event => {
+        video.play()
+      })
+      videoLink.addEventListener("targetLost", event => {
+        video.pause()
+      })
+    }
+  </script>
+</head>
+
+<body>
+  <a-scene mindar-image="imageTargetSrc: ./targets.mind;" color-space="sRGB"
+    renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false">
+    <a-assets>
+      <video id="video" autoplay loop="true" src="./video.mp4"></video>
+    </a-assets>
+
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+
+    <a-entity id="target-entity" mindar-image-target="targetIndex: 0">
+      <a-video src="#video" webkit-playsinline playsinline width="1" height="1.25" position="0 0 0">
+      </a-video>
+    </a-entity>
+  </a-scene>
+</body>
+
+</html>
