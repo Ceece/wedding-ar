@@ -7,13 +7,19 @@
   <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-image-aframe.prod.js"></script>
   <script>
     window.onload = function () {
-      const videoLink = document.querySelector('#target-entity');
-      const video = document.querySelector('#video');
-      videoLink.addEventListener("targetFound", event => {
-        video.play()
+      const sceneEl = document.querySelector('a-scene')
+      const videoEl = document.querySelector('#video')
+      sceneEl.addEventListener("arReady", (event) => {
+        var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        if (isSafari) {
+          videoEl.muted = true
+        }
       })
-      videoLink.addEventListener("targetLost", event => {
-        video.pause()
+      sceneEl.addEventListener("targetFound", event => {
+        videoEl.play()
+      })
+      sceneEl.addEventListener("targetLost", event => {
+        videoEl.pause()
       })
     }
   </script>
@@ -24,7 +30,7 @@
     renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false">
     <a-assets>
-      <video id="video" autoplay loop="true" src="./video.mp4"></video>
+      <video id="video" loop playsinline src="./video.mp4"></video>
     </a-assets>
 
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
