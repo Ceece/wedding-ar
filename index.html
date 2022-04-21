@@ -9,17 +9,21 @@
     window.onload = function () {
       const sceneEl = document.querySelector('a-scene')
       const videoEl = document.querySelector('#video')
-      sceneEl.addEventListener("arReady", (event) => {
+      const playerEl = document.querySelector('[src="#video"]')
+      sceneEl.addEventListener("arReady", () => {
         var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
         if (isSafari) {
           videoEl.muted = true
         }
       })
-      sceneEl.addEventListener("targetFound", event => {
+      sceneEl.addEventListener("targetFound", () => {
         videoEl.play()
       })
-      sceneEl.addEventListener("targetLost", event => {
+      sceneEl.addEventListener("targetLost", () => {
         videoEl.pause()
+      })
+      playerEl.addEventListener('click', () => {
+        videoEl.muted = false
       })
     }
   </script>
@@ -33,10 +37,11 @@
       <video id="video" loop playsinline src="./video.mp4"></video>
     </a-assets>
 
-    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-
+    <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"
+      raycaster="far: 10000; objects: .clickable">
+    </a-camera>
     <a-entity id="target-entity" mindar-image-target="targetIndex: 0">
-      <a-video src="#video" webkit-playsinline playsinline width="1" height="1.25" position="0 0 0">
+      <a-video src="#video" class="clickable" webkit-playsinline playsinline width="1" height="1.25" position="0 0 0">
       </a-video>
     </a-entity>
   </a-scene>
